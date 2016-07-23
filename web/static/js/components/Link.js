@@ -15,6 +15,10 @@ class Link extends React.Component {
     fontSize: '0.85em',
   });
 
+  commentStyle = () => ({
+    color: 'purple',
+    fontSize: '0.85em',
+  });
 
   dateLabel = () => {
     const { link , relay } = this.props;
@@ -48,6 +52,11 @@ class Link extends React.Component {
                     >
                       {urlPrettify(link.url)}
                     </a>
+                </div>
+                <div>
+                  <span style={this.commentStyle()}>
+                      Here is my comment about this link.
+                    </span>
                 </div>
             </div>
         </li>

@@ -81,7 +81,7 @@ class App extends React.Component {
             <div className="row">
                 <a
                   className="waves-effect waves-light btn modal-trigger right light-blue white-text"       href="#modal"
-                >Add New Resource
+                >Add New Resource, Please!
                 </a>
             </div>
 
@@ -123,7 +123,7 @@ class App extends React.Component {
             >
                 <form onSubmit={this.handleSubmit}>
                     <div className="modal-content">
-                        <h5>Add New Resource</h5>
+                        <h5>Add New Resource, OK?</h5>
                         <div className="input-field">
                             <input
                                 className="validate"
