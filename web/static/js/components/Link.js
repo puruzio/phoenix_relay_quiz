@@ -55,7 +55,7 @@ class Link extends React.Component {
                 </div>
                 <div>
                   <span style={this.commentStyle()}>
-                      Here is my comment about this link.
+                      {link.comment}
                     </span>
                 </div>
             </div>
@@ -71,6 +71,7 @@ export default Relay.createContainer(Link, {
         fragment on Link {
           url,
           title,
+          comment,
           createdAt,
         }
       `;

@@ -62,7 +62,8 @@ defmodule App.PublicSchema do
             name: "CreateLink",
             input_fields: %{
               title: %{type: %NonNull{ofType: %String{}}},
-              url: %{type: %NonNull{ofType: %String{}}}
+              url: %{type: %NonNull{ofType: %String{}}},
+              comment: %{type: %NonNull{ofType: %String{}}}
             },
             output_fields: %{
               linkEdge: %{
@@ -87,6 +88,7 @@ defmodule App.PublicSchema do
                   %{
                     title: input["title"],
                     url: input["url"],
+                    comment: input["comment"],
                     timestamp: TimeHelper.currentTime
                     })
                 |> DB.run

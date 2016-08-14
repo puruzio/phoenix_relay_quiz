@@ -10,6 +10,7 @@ defmodule App.Type.Link do
           id: @type_string,
           title: @type_string,
           url: @type_string,
+          comment: @type_string,
           createdAt: %{
             type: %GraphQL.Type.String{},
             resolve: fn( obj, _args, _info) ->

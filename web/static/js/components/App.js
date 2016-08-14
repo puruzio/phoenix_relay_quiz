@@ -44,12 +44,14 @@ class App extends React.Component {
       new CreateLinkMutation({
         title: this.newTitle.value,
         url: this.newUrl.value,
+        comment: this.newComment.value,
         store: this.props.store,
       }),
       { onFailure, onSuccess }
     );
     this.newTitle.value = '';
     this.newUrl.value = '';
+    this.newComment.value = '';
   }
 
   componentDidMount() {
@@ -146,6 +148,18 @@ class App extends React.Component {
                             />
                             <label htmlFor="newUrl">
                               Url
+                            </label>
+                        </div>
+                        <div className="input-field">
+                            <input
+                                className="validate"
+                                id="newComment"
+                                ref={(c) => (this.newComment = c)}
+                                required
+                                type="text"
+                            />
+                            <label htmlFor="newComment">
+                              Comment
                             </label>
                         </div>
                     </div>

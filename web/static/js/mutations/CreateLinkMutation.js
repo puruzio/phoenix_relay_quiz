@@ -10,6 +10,7 @@ class CreateLinkMutation extends Relay.Mutation {
   getVariables() {
     return {
       title: this.props.title,
+      comment: this.props.comment,
       url: this.props.url,
     };
   }
@@ -41,6 +42,7 @@ class CreateLinkMutation extends Relay.Mutation {
       linkEdge: {
         node: {
           title: this.props.title,
+          comment: this.props.comment,
           url: this.props.url,
         },
       },
