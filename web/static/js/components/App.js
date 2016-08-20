@@ -81,9 +81,8 @@ class App extends React.Component {
             </div>
 
             <div className="row">
-                <a
-                  className="waves-effect waves-light btn modal-trigger right light-blue white-text"       href="#modal"
-                >Add New Resource, Please!
+                <a className="waves-effect waves-light btn modal-trigger right light-blue white-text"       href="#modal">
+                 Yay! Add New Quiz!
                 </a>
             </div>
 
@@ -125,7 +124,7 @@ class App extends React.Component {
             >
                 <form onSubmit={this.handleSubmit}>
                     <div className="modal-content">
-                        <h5>Add New Resource, OK?</h5>
+                        <h5>Add New Quiz</h5>
                         <div className="input-field">
                             <input
                                 className="validate"
@@ -135,7 +134,7 @@ class App extends React.Component {
                                 type="text"
                             />
                             <label htmlFor="newTitle">
-                              Title
+                              Quiz
                             </label>
                         </div>
                         <div className="input-field">
@@ -144,10 +143,10 @@ class App extends React.Component {
                                 id="newUrl"
                                 ref={(c) => (this.newUrl = c)}
                                 required
-                                type="url"
+                                type="text"
                             />
                             <label htmlFor="newUrl">
-                              Url
+                              Text
                             </label>
                         </div>
                         <div className="input-field">
@@ -159,7 +158,7 @@ class App extends React.Component {
                                 type="text"
                             />
                             <label htmlFor="newComment">
-                              Comment
+                              Answer
                             </label>
                         </div>
                     </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import Relay from 'react-relay';
 import moment from 'moment';
 import urlPrettify from '../shared/urlPrettify';
+import "./link_jo.css"
 
 class Link extends React.Component {
   dateStyle = () => ({
@@ -18,6 +19,7 @@ class Link extends React.Component {
   commentStyle = () => ({
     color: 'purple',
     fontSize: '0.85em',
+    display: 'block'
   });
 
   dateLabel = () => {
@@ -30,8 +32,27 @@ class Link extends React.Component {
 
   render() {
     let { link } = this.props;
+
+    var choices = [];
+    if (link.comment) {
+    choices = link.comment.split(',');
+    } else {
+      choices = ['Yes','No'];
+    } 
+
+    // let choices = this.props.comment || ["Choice 1", "Choice 2", "Choice 3"]
+    let choice_buttons = choices.map((choice) => {
+      return (
+        <div>
+        <a key = {choice} className="waves-effect waves-light btn modal-trigger right light-orange white-text"       href="#">
+                 {choice}
+                </a>
+        </div>
+      );
+    });
+
     return (
-        <li>
+        <li id="container_link">
             <div
                 className="card-panel"
                 style={{ padding: '1em' }}
@@ -55,7 +76,8 @@ class Link extends React.Component {
                 </div>
                 <div>
                   <span style={this.commentStyle()}>
-                      {link.comment}
+                      {/*}{link.comment} {*/}
+                      {choice_buttons}
                     </span>
                 </div>
             </div>

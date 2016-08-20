@@ -1,0 +1,4 @@
+#container_link:before, #container:after{
+    content: ' ';
+    display: table;
+}

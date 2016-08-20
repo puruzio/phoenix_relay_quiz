@@ -37,7 +37,8 @@ module.exports = {
         test: /\.jsx?$/,
         loaders: ['babel'],
         exclude: path.resolve(__dirname, 'node_modules')
-      }
+      },
+      { test: /\.css$/, loader: "style-loader!css-loader" }
     ]
   }
 }

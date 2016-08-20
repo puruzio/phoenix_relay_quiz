@@ -13,7 +13,7 @@ defmodule Mix.Tasks.CreateSchema do
       {:error, reason} ->
         IO.inspect "schema could not be created because #{reason}"
       _other ->
-        IO.inspect "unknown error while createing schema"
+        IO.inspect "unknown error while creating schema"
     end
   end
 end

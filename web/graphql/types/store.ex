@@ -30,7 +30,19 @@ defmodule App.Type.Store do
               |> DB.handle_graphql_resp
           Connection.List.resolve(query, args)
           end
-        }
+        },
+        userConnection: %{
+          type: App.Type.UserConnection.get[:connection_type],
+          args: Map.merge(Connection.args, %{query: @type_string}),
+          resolve: fn ( _, args , _ctx) ->
+            query = table("users")
+              |> Query.filter( lambda fn(user) ->  Query.match(user[:title],args[:query]) end)
+              |> Query.order_by(Query.desc("timestamp"))
+              |> DB.run
+              |> DB.handle_graphql_resp
+          Connection.List.resolve(query, args)
+          end
+        },
       },
       interfaces: [App.PublicSchema.node_interface]
     }

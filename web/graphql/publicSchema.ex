@@ -94,6 +94,42 @@ defmodule App.PublicSchema do
                 |> DB.run
                 |> DB.handle_graphql_resp
             end
+          }),
+          createUser: Mutation.new(%{
+            name: "CreateUser",
+            input_fields: %{
+              id: %{type: %NonNull{ofType: %String{}}},
+              firstname: %{type: %NonNull{ofType: %String{}}},
+              lastname: %{type: %NonNull{ofType: %String{}}},
+            },
+            output_fields: %{
+              userEdge: %{
+                type: App.Type.UserConnection.get[:edge_type],
+                resolve: fn (obj, _args, _info) ->
+                  %{
+                    node: App.Query.User.get_from_id(first(obj[:generated_keys])),
+                    cursor: first(obj[:generated_keys])
+                  }
+                end
+              },
+              store: %{
+                type: App.Type.Store.get,
+                resolve: fn (obj, _args, _info) ->
+                  @store
+                end
+              }
+            },
+            mutate_and_get_payload: fn(input, _info) ->
+              Query.table("users")
+                |> Query.insert(
+                  %{
+                    firstname: input["firstname"],
+                    lastname: input["lastname"],
+                    timestamp: TimeHelper.currentTime
+                    })
+                |> DB.run
+                |> DB.handle_graphql_resp
+            end
           })
         }
       }
