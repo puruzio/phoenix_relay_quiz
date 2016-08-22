@@ -4,7 +4,7 @@ import moment from 'moment';
 import urlPrettify from '../shared/urlPrettify';
 import "./link_jo.css"
 
-class Link extends React.Component {
+class Quiz extends React.Component {
   dateStyle = () => ({
     color: '#888',
     fontSize: '0.7em',
@@ -16,26 +16,26 @@ class Link extends React.Component {
     fontSize: '0.85em',
   });
 
-  commentStyle = () => ({
+  choiceStyle = () => ({
     color: 'purple',
     fontSize: '0.85em',
     display: 'block'
   });
 
   dateLabel = () => {
-    const { link , relay } = this.props;
-    if (relay.hasOptimisticUpdate(link)) {
-      return 'Saveing...';
+    const { quiz , relay } = this.props;
+    if (relay.hasOptimisticUpdate(quiz)) {
+      return 'Saving...';
     }
-    return moment(link.createdAt).format('L');
+    return moment(quiz.createdAt).format('L');
   };
 
   render() {
-    let { link } = this.props;
+    let { quiz } = this.props;
 
     var choices = [];
-    if (link.comment) {
-    choices = link.comment.split(',');
+    if (quiz.choices) {
+    choices = quiz.choices.split(',');
     } else {
       choices = ['Yes','No'];
     } 
@@ -58,25 +58,19 @@ class Link extends React.Component {
                 style={{ padding: '1em' }}
             >
                 <a
-                    href={link.url}
+                    href={quiz.question}
                     target="_blank"
                 >
-                  {link.title}
+                  {quiz.question}
                 </a>
                 <div className="truncate">
                     <span style={this.dateStyle()}>
                       {this.dateLabel()}
                     </span>
-                    <a
-                        href={link.url}
-                        style={this.urlStyle()}
-                    >
-                      {urlPrettify(link.url)}
-                    </a>
                 </div>
                 <div>
-                  <span style={this.commentStyle()}>
-                      {/*}{link.comment} {*/}
+                  <span style={this.choiceStyle()}>
+                      {/*}{quiz.choices} {*/}
                       {choice_buttons}
                     </span>
                 </div>
@@ -86,15 +80,15 @@ class Link extends React.Component {
   }
 }
 
-export default Relay.createContainer(Link, {
+export default Relay.createContainer(Quiz, {
   fragments:{
-    link: () => {
+    quiz: () => {
       return Relay.QL`
-        fragment on Link {
-          url,
-          title,
-          comment,
+        fragment on Quiz {
+          question,
+          choices,
           createdAt,
+          id
         }
       `;
     },

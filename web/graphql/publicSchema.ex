@@ -58,19 +58,18 @@ defmodule App.PublicSchema do
       mutation: %ObjectType{
         name: "Mutation",
         fields: %{
-          createLink: Mutation.new(%{
-            name: "CreateLink",
+          createQuiz: Mutation.new(%{
+            name: "CreateQuiz",
             input_fields: %{
-              title: %{type: %NonNull{ofType: %String{}}},
-              url: %{type: %NonNull{ofType: %String{}}},
-              comment: %{type: %NonNull{ofType: %String{}}}
+              question: %{type: %NonNull{ofType: %String{}}},
+              choices: %{type: %NonNull{ofType: %String{}}}
             },
             output_fields: %{
-              linkEdge: %{
-                type: App.Type.LinkConnection.get[:edge_type],
+              quizEdge: %{
+                type: App.Type.QuizConnection.get[:edge_type],
                 resolve: fn (obj, _args, _info) ->
                   %{
-                    node: App.Query.Link.get_from_id(first(obj[:generated_keys])),
+                    node: App.Query.Quiz.get_from_id(first(obj[:generated_keys])),
                     cursor: first(obj[:generated_keys])
                   }
                 end
@@ -83,12 +82,11 @@ defmodule App.PublicSchema do
               }
             },
             mutate_and_get_payload: fn(input, _info) ->
-              Query.table("links")
+              Query.table("quizs")
                 |> Query.insert(
                   %{
-                    title: input["title"],
-                    url: input["url"],
-                    comment: input["comment"],
+                    question: input["question"],
+                    choices: input["choices"],
                     timestamp: TimeHelper.currentTime
                     })
                 |> DB.run
@@ -99,8 +97,8 @@ defmodule App.PublicSchema do
             name: "CreateUser",
             input_fields: %{
               id: %{type: %NonNull{ofType: %String{}}},
-              firstname: %{type: %NonNull{ofType: %String{}}},
-              lastname: %{type: %NonNull{ofType: %String{}}},
+              username: %{type: %NonNull{ofType: %String{}}},
+              email: %{type: %NonNull{ofType: %String{}}},
             },
             output_fields: %{
               userEdge: %{
@@ -123,8 +121,8 @@ defmodule App.PublicSchema do
               Query.table("users")
                 |> Query.insert(
                   %{
-                    firstname: input["firstname"],
-                    lastname: input["lastname"],
+                    username: input["username"],
+                    email: input["email"],
                     timestamp: TimeHelper.currentTime
                     })
                 |> DB.run

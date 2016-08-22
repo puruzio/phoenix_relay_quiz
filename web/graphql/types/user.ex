@@ -7,8 +7,8 @@ defmodule App.Type.User do
         name: "User",
         fields: %{
           id: @type_string,
-          firstname: @type_string,
-          lastname: @type_string,
+          username: @type_string,
+          email: @type_string,
           createdAt: %{
             type: %GraphQL.Type.String{},
             resolve: fn( obj, _args, _info) ->

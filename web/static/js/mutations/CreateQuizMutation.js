@@ -3,16 +3,6 @@ import Relay from 'react-relay';
 
 class CreateQuizMutation extends Relay.Mutation {
 
-    static fragments = {
-
-    user: () => Relay.QL`fragment on User {
-      id,
-      quizzes {
-        count,
-      }
-    }`
-  };
-
   getMutation() {
     return Relay.QL`
       mutation { createQuiz }
@@ -22,8 +12,7 @@ class CreateQuizMutation extends Relay.Mutation {
   getVariables() {
     return {
       question: this.props.question,
-      complete: false,
-      user: this.props.user.id,
+      choices: this.props.choices,
     };
   }
 
@@ -31,13 +20,7 @@ class CreateQuizMutation extends Relay.Mutation {
     return Relay.QL`
       fragment on CreateQuizPayload {
         quizEdge,
-        store { quizConnection },
-        user {
-          id,
-          quizzes {
-            count
-          }
-        },
+        store { quizConnection }
       }
     `;
   }
@@ -60,7 +43,7 @@ class CreateQuizMutation extends Relay.Mutation {
       quizEdge: {
         node: {
           question: this.props.question,
-          complete: false,
+          choices: this.props.choices
         },
       },
     };

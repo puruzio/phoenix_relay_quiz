@@ -19,12 +19,12 @@ defmodule App.Type.Store do
       name: "Store",
       fields: %{
         id: Node.global_id_field("Store"),
-        linkConnection: %{
-          type: App.Type.LinkConnection.get[:connection_type],
+        quizConnection: %{
+          type: App.Type.QuizConnection.get[:connection_type],
           args: Map.merge(Connection.args, %{query: @type_string}),
           resolve: fn ( _, args , _ctx) ->
-            query = table("links")
-              |> Query.filter( lambda fn(link) ->  Query.match(link[:title],args[:query]) end)
+            query = table("quizs")
+              |> Query.filter( lambda fn(quiz) ->  Query.match(quiz[:question],args[:query]) end)
               |> Query.order_by(Query.desc("timestamp"))
               |> DB.run
               |> DB.handle_graphql_resp
@@ -36,7 +36,7 @@ defmodule App.Type.Store do
           args: Map.merge(Connection.args, %{query: @type_string}),
           resolve: fn ( _, args , _ctx) ->
             query = table("users")
-              |> Query.filter( lambda fn(user) ->  Query.match(user[:title],args[:query]) end)
+              |> Query.filter( lambda fn(user) ->  Query.match(user[:username],args[:query]) end)
               |> Query.order_by(Query.desc("timestamp"))
               |> DB.run
               |> DB.handle_graphql_resp

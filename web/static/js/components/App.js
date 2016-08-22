@@ -1,9 +1,11 @@
 
 import React from 'react';
 import Relay from 'react-relay';
-import Link from './Link';
+import Quiz from './Quiz';
+import UserLogin from './UserLogin';
+import UserCreate from './UserCreate';
 import { debounce } from 'lodash';
-import CreateLinkMutation from '../mutations/CreateLinkMutation';
+import CreateQuizMutation from '../mutations/CreateQuizMutation';
 
 class App extends React.Component {
   static propTypes = {
@@ -41,17 +43,16 @@ class App extends React.Component {
     };
 
     Relay.Store.commitUpdate(
-      new CreateLinkMutation({
-        title: this.newTitle.value,
-        url: this.newUrl.value,
-        comment: this.newComment.value,
+      new CreateQuizMutation({
+        question: this.newQuestion.value,
+        choices: this.newChoices.value,
         store: this.props.store,
       }),
       { onFailure, onSuccess }
     );
-    this.newTitle.value = '';
-    this.newUrl.value = '';
-    this.newComment.value = '';
+
+    this.newQuestion.value = '';
+    this.newChoices.value = '';
   }
 
   componentDidMount() {
@@ -59,12 +60,12 @@ class App extends React.Component {
   }
 
   render() {
-    const edges = this.props.store.linkConnection.edges;
+    const edges = this.props.store.quizConnection.edges;
     const content = edges.map((edge) => {
       return (
-          <Link
+          <Quiz
               key={edge.node.id}
-              link={edge.node}
+              quiz={edge.node}
           />
       );
     });
@@ -81,9 +82,14 @@ class App extends React.Component {
             </div>
 
             <div className="row">
+
+                <UserLogin />
+                <UserCreate />
+
                 <a className="waves-effect waves-light btn modal-trigger right light-blue white-text"       href="#modal">
                  Yay! Add New Quiz!
                 </a>
+             
             </div>
 
             <ul>
@@ -128,36 +134,25 @@ class App extends React.Component {
                         <div className="input-field">
                             <input
                                 className="validate"
-                                id="newTitle"
-                                ref={(c) => (this.newTitle = c)}
+                                id="newQuestion"
+                                ref={(c) => (this.newQuestion = c)}
                                 required
                                 type="text"
                             />
-                            <label htmlFor="newTitle">
+                            <label htmlFor="newQuestion">
                               Quiz
                             </label>
                         </div>
+                    
                         <div className="input-field">
                             <input
                                 className="validate"
-                                id="newUrl"
-                                ref={(c) => (this.newUrl = c)}
+                                id="newChoices"
+                                ref={(c) => (this.newChoices = c)}
                                 required
                                 type="text"
                             />
-                            <label htmlFor="newUrl">
-                              Text
-                            </label>
-                        </div>
-                        <div className="input-field">
-                            <input
-                                className="validate"
-                                id="newComment"
-                                ref={(c) => (this.newComment = c)}
-                                required
-                                type="text"
-                            />
-                            <label htmlFor="newComment">
+                            <label htmlFor="newChoices">
                               Answer
                             </label>
                         </div>
@@ -195,11 +190,19 @@ export default Relay.createContainer(App, {
       return Relay.QL`
         fragment on Store {
           id,
-          linkConnection(first: $limit, query: $query) {
+          quizConnection(first: $limit, query: $query) {
             edges{
               node{
                 id,
-                ${Link.getFragment('link')}
+                ${Quiz.getFragment('quiz')}
+              }
+            }
+          },
+          userConnection(first: $limit, query: $query) {
+            edges{
+              node{
+                id,
+                ${UserLogin.getFragment('user')}
               }
             }
           }

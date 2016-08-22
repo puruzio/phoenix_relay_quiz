@@ -1,14 +1,9 @@
-defmodule App.User do
+defmodule App.Room do
   use App.Web, :model
   use Ecto.Schema
 
-# :binary_id is managed by drivers/adapters, it will be UUID for mysql, postgres
-  #  but can be ObjectID if later you decide to use mongo
-  # http://websymphony.net/blog/2015/06/28/how-to-use-uuid-as-primary-key-in-ecto-phoenix/
-  @primary_key {:id, :binary_id, autogenerate: true}
-
-  schema "users" do
-    field :username, :string
+  schema "rooms" do
+    field :roomname, :string
     field :email, :string
     field :password, :string, virtual: true
     field :password_hash, :string
@@ -16,7 +11,7 @@ defmodule App.User do
     timestamps
   end
 
-  @required_fields ~w(username email)
+  @required_fields ~w(roomname email)
   @optional_fields ~w()
 
   @doc """
@@ -28,7 +23,7 @@ defmodule App.User do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
-    |> validate_length(:username, min: 1, max: 20)
+    |> validate_length(:roomname, min: 1, max: 20)
   end
 
   def registration_changeset(model, params) do

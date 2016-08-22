@@ -2,11 +2,6 @@ defmodule App.User do
   use App.Web, :model
   use Ecto.Schema
 
-# :binary_id is managed by drivers/adapters, it will be UUID for mysql, postgres
-  #  but can be ObjectID if later you decide to use mongo
-  # http://websymphony.net/blog/2015/06/28/how-to-use-uuid-as-primary-key-in-ecto-phoenix/
-  @primary_key {:id, :binary_id, autogenerate: true}
-
   schema "users" do
     field :username, :string
     field :email, :string

@@ -1,16 +1,15 @@
 
-defmodule App.Type.Link do
+defmodule App.Type.Quiz do
   @type_string %{type: %GraphQL.Type.String{}}
   alias GraphQL.Type.ObjectType
 
   def get do
     %ObjectType{
-        name: "Link",
+        name: "Quiz",
         fields: %{
           id: @type_string,
-          title: @type_string,
-          url: @type_string,
-          comment: @type_string,
+          question: @type_string,
+          choices: @type_string,
           createdAt: %{
             type: %GraphQL.Type.String{},
             resolve: fn( obj, _args, _info) ->
