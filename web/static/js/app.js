@@ -1,6 +1,7 @@
 // Phoenix' dependencies
 import '../../../deps/phoenix/priv/static/phoenix';
 import '../../../deps/phoenix_html/priv/static/phoenix_html';
+import useRelay from 'react-router-relay';
 
 import 'babel-polyfill';
 
