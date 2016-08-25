@@ -62,7 +62,8 @@ defmodule App.PublicSchema do
             name: "CreateQuiz",
             input_fields: %{
               question: %{type: %NonNull{ofType: %String{}}},
-              choices: %{type: %NonNull{ofType: %String{}}}
+              choices: %{type: %NonNull{ofType: %String{}}},
+              author: %{type: %NonNull{ofType: %String{}}},
             },
             output_fields: %{
               quizEdge: %{
@@ -87,6 +88,7 @@ defmodule App.PublicSchema do
                   %{
                     question: input["question"],
                     choices: input["choices"],
+                    author: _info.root_value.author,
                     timestamp: TimeHelper.currentTime
                     })
                 |> DB.run

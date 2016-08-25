@@ -10,6 +10,7 @@ defmodule App.Type.Quiz do
           id: @type_string,
           question: @type_string,
           choices: @type_string,
+          author: @type_string,
           createdAt: %{
             type: %GraphQL.Type.String{},
             resolve: fn( obj, _args, _info) ->

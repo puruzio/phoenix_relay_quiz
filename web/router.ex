@@ -19,8 +19,7 @@ defmodule App.Router do
 
   scope "/graphql" do
     pipe_through :api
-    forward "/", GraphQL.Plug, [schema: {App.PublicSchema, :schema}]
-                                #, root_value: {App.GraphQLSession, :root_value} ]
+    forward "/", GraphQL.Plug, [schema: {App.PublicSchema, :schema}, root_value: {App.GraphQLSession, :root_eval} ]
   end
 
   scope "/", App do
