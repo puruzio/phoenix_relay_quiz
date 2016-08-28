@@ -1,6 +1,7 @@
 import React from 'react';
 import Relay from 'react-relay';
 import axios from 'axios';
+import $ from 'jquery';
 
 const UserLogin = React.createClass({
   componentDidMount() {
@@ -37,7 +38,9 @@ const UserLogin = React.createClass({
                 if (response.status === 200) {
                   // dispatch({
                   //   type: 'CURRENT_USER',
+                    $("#current_user").text(response.data.data.username);
                     console.log('Current user: ' );
+                    console.log(response.data.data.username);
                     console.log(response.data.data);
                   
                 } else {
@@ -56,6 +59,9 @@ const UserLogin = React.createClass({
         console.log("Failed login...");
         console.log(response);
       });
+
+      self.props.onSuccessFunc();
+      // $('#modal1').closeModal1();
   },
   render () {
     console.log(this.props);

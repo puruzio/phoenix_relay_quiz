@@ -6,6 +6,19 @@ import UserLogin from './UserLogin';
 import UserCreate from './UserCreate';
 import { debounce } from 'lodash';
 import CreateQuizMutation from '../mutations/CreateQuizMutation';
+import Modal from 'react-modal';
+// import $ from 'jquery';
+
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)'
+  }
+};
 
 class App extends React.Component {
   static propTypes = {
@@ -14,9 +27,19 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
+    
     this.search = debounce(this.search,300);
-  }
+    this.state = {
+        modalIsOpen: false,
+        modalIsOpen1: false,
+        modalIsOpen2: false
+    }
 
+    this.openModal1 = this.openModal1.bind(this);
+    this.closeModal1 = this.closeModal1.bind(this);
+    this.openModal2 = this.openModal2.bind(this);
+    this.closeModal2 = this.closeModal2.bind(this);
+  }
 
   handleSearch = (e) => {
     this.search(e.target.value);
@@ -46,13 +69,45 @@ class App extends React.Component {
       new CreateQuizMutation({
         question: this.newQuestion.value,
         choices: this.newChoices.value,
+        author: $("#current_user").text(),
+        categories: this.newCategories.value,
+        mediaUrl: this.newMediaUrl.value,
+        typeCode: this.newTypeCode.value,
         store: this.props.store,
+
       }),
       { onFailure, onSuccess }
     );
 
     this.newQuestion.value = '';
     this.newChoices.value = '';
+  }
+
+  openModal1 () {
+    this.setState({modalIsOpen1: true});
+  }
+
+  afterOpenModal1 () {
+    // references are now sync'd and can be accessed.
+    this.refs.subtitle.style.color = '#f00';
+  }
+
+  closeModal1 ()  {
+    this.setState({modalIsOpen1: false});
+  }
+
+
+  openModal2 () {
+    this.setState({modalIsOpen2: true});
+  }
+
+  afterOpenModal2 () {
+    // references are now sync'd and can be accessed.
+    this.refs.subtitle.style.color = '#f00';
+  }
+
+  closeModal2 ()  {
+    this.setState({modalIsOpen2: false});
   }
 
   componentDidMount() {
@@ -81,10 +136,35 @@ class App extends React.Component {
                 <label htmlFor="search">Search All Resources</label>
             </div>
 
+           <Modal
+                isOpen={this.state.modalIsOpen1}
+                onAfterOpen={this.afterOpenModal1}
+                onRequestClose={this.closeModal1}
+                style={customStyles} >
+
+                <UserLogin onSuccessFunc = {this.closeModal1}/>
+            </Modal>
+
+            <Modal
+                isOpen={this.state.modalIsOpen2}
+                onAfterOpen={this.afterOpenModal2}
+                onRequestClose={this.closeModal2}
+                style={customStyles} >
+
+                <UserCreate onSuccessFunc = {this.closeModal2}/>
+            </Modal>
+            
             <div className="row">
 
-                <UserLogin />
-                <UserCreate />
+               {/*} <UserLogin />
+                <UserCreate /> {*/}
+                <a className="waves-effect waves-light btn right light-blue white-text"  onClick={this.openModal2}   href="#modal2">
+                 Register
+                </a>
+                
+                <a className="waves-effect waves-light btn right light-blue white-text" onClick={this.openModal1} >
+                 Login
+                </a>
 
                 <a className="waves-effect waves-light btn modal-trigger right light-blue white-text"       href="#modal">
                  Yay! Add New Quiz!
@@ -156,6 +236,42 @@ class App extends React.Component {
                               Answer
                             </label>
                         </div>
+                        <div className="input-field">
+                            <input
+                                className="validate"
+                                id="newCategories"
+                                ref={(c) => (this.newCategories = c)}
+                                required
+                                type="text"
+                            />
+                            <label htmlFor="newCategories">
+                              Categories
+                            </label>
+                        </div>
+                        <div className="input-field">
+                            <input
+                                className="validate"
+                                id="newMediaUrl"
+                                ref={(c) => (this.newMediaUrl = c)}
+                                required
+                                type="text"
+                            />
+                            <label htmlFor="newMediaUrl">
+                              Media URL (e.g., http://blahblah.com/img/img01.jpg)
+                            </label>
+                        </div>
+                        <div className="input-field">
+                            <input
+                                className="validate"
+                                id="newTypeCode"
+                                ref={(c) => (this.newTypeCode = c)}
+                                required
+                                type="text"
+                            />
+                            <label htmlFor="newTypeCode">
+                              Type Code
+                            </label>
+                        </div>
                     </div>
                     <div className="modal-footer">
                         <button
@@ -175,6 +291,9 @@ class App extends React.Component {
                     </div>
                 </form>
             </div>
+
+
+
         </div>
       );
   }
@@ -182,7 +301,7 @@ class App extends React.Component {
 
 export default Relay.createContainer(App, {
   initialVariables:{
-    limit: 10,
+    limit: 15,
     query: '',
   },
   fragments: {

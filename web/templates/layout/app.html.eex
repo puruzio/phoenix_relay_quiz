@@ -15,6 +15,9 @@
 
   <body>
     <div id="main" class="container">
+        <div> Current user: 
+          <span id="current_user">  </span>
+        </div>
         <h4>
             QueFeed! Quest for Truth.
             <!--<strong>P</strong>hoenix, <strong>R</strong>ethinkDB, <strong>R</strong>eact, <strong>G</strong>raphQL, and <strong>R</strong>elay-->

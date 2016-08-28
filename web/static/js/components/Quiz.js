@@ -2,7 +2,8 @@ import React from 'react';
 import Relay from 'react-relay';
 import moment from 'moment';
 import urlPrettify from '../shared/urlPrettify';
-import "./link_jo.css"
+import "./link_jo.css";
+import $ from 'jquery';
 
 class Quiz extends React.Component {
   dateStyle = () => ({
@@ -35,9 +36,16 @@ class Quiz extends React.Component {
 
     var choices = [];
     if (quiz.choices) {
-    choices = quiz.choices.split(',');
+      choices = quiz.choices.split(',');
     } else {
       choices = ['Yes','No'];
+    } 
+
+    var categories = [];
+    if (quiz.categories) {
+      categories = quiz.categories.split(',');
+    } else {
+      categories = ['uncategorized'];
     } 
 
     // let choices = this.props.comment || ["Choice 1", "Choice 2", "Choice 3"]
@@ -51,6 +59,13 @@ class Quiz extends React.Component {
       );
     });
 
+    let categoryButtons = categories.map((category) => {
+      return (
+        <button type = "button" key = {category} class = "btn-floating green"> {category} </button>
+      );
+    });
+
+
     return (
         <li id="container_link">
             <div
@@ -61,11 +76,23 @@ class Quiz extends React.Component {
                     href={quiz.question}
                     target="_blank"
                 >
-                  {quiz.question}
+                  <h4> {quiz.question} </h4>
                 </a>
+                <span>
+                 <img
+                    src={quiz.mediaUrl || 'https://unsplash.it/200/200?random'}
+                    alt = {quiz.question}
+                    class ="img-responsive"/>
+                </span>
                 <div className="truncate">
                     <span style={this.dateStyle()}>
                       {this.dateLabel()}
+                    </span>
+                    <span>
+                      by {quiz.author || 'anonymous'}
+                    </span>
+                    <span>
+                      {categoryButtons}
                     </span>
                 </div>
                 <div>
@@ -87,6 +114,10 @@ export default Relay.createContainer(Quiz, {
         fragment on Quiz {
           question,
           choices,
+          author,
+          categories,
+          mediaUrl,
+          typeCode,
           createdAt,
           id
         }

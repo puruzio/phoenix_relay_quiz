@@ -13,6 +13,10 @@ class CreateQuizMutation extends Relay.Mutation {
     return {
       question: this.props.question,
       choices: this.props.choices,
+      author: this.props.author,
+      categories: this.props.categories,
+      mediaUrl: this.props.mediaUrl,
+      typeCode: this.props.typeCode,
     };
   }
 
@@ -43,7 +47,11 @@ class CreateQuizMutation extends Relay.Mutation {
       quizEdge: {
         node: {
           question: this.props.question,
-          choices: this.props.choices
+          choices: this.props.choices,
+          author: this.props.author,
+          categories: this.props.categories,
+          mediaUrl: this.props.mediaUrl,
+          typeCode: this.props.typeCode,
         },
       },
     };

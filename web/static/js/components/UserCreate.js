@@ -36,7 +36,9 @@ const UserCreate = React.createClass({
       .catch(function(response) {
         console.log(response);
       });
-    
+
+    self.props.onSuccessFunc();
+    // $('#modal').closeModal();
   },
   render () {
     return (

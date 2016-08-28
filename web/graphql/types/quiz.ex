@@ -11,6 +11,9 @@ defmodule App.Type.Quiz do
           question: @type_string,
           choices: @type_string,
           author: @type_string,
+          categories: @type_string,
+          mediaUrl: @type_string,
+          typeCode: @type_string,
           createdAt: %{
             type: %GraphQL.Type.String{},
             resolve: fn( obj, _args, _info) ->
