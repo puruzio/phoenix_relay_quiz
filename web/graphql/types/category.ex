@@ -23,3 +23,4 @@ defmodule App.Category.Type do
   end
 
 end
+ 
