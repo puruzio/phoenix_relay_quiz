@@ -1,3 +1,4 @@
+Test Code based on https://github.com/graphql-elixir/phoenix-hipster-stack
 # Phoenix hipster stack!
 * [Phoenix] (http://www.phoenixframework.org/)
 * [React] (https://facebook.github.io/react/)
