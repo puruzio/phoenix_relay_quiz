@@ -1,4 +1,4 @@
-defmodule App.Type.Store do
+defmodule App.Store.Type do
 
   alias GraphQL.Schema
   alias GraphQL.Type.ObjectType
@@ -14,7 +14,7 @@ defmodule App.Type.Store do
   alias GraphQL.Type.ID
   alias GraphQL.Type.NonNull
 
-  def get do
+  def type do
     %ObjectType{
       name: "Store",
       fields: %{

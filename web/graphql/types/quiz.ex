@@ -1,9 +1,14 @@
 
-defmodule App.Type.Quiz do
+defmodule App.Quiz.Type do
   @type_string %{type: %GraphQL.Type.String{}}
   alias GraphQL.Type.ObjectType
+  alias App.Type.CategoryConnection
+  alias GraphQL.Type.List
+  alias App.PublicSchema
+  alias GraphQL.Relay.Node
+  alias App.Category.Type
 
-  def get do
+  def type do
     %ObjectType{
         name: "Quiz",
         fields: %{
@@ -11,7 +16,7 @@ defmodule App.Type.Quiz do
           question: @type_string,
           choices: @type_string,
           author: @type_string,
-          categories: @type_string,
+          categories: App.Quiz.Category.Root.get, #%{type: CategoryConnection.get},
           mediaUrl: @type_string,
           typeCode: @type_string,
           createdAt: %{
@@ -20,8 +25,11 @@ defmodule App.Type.Quiz do
               obj.timestamp
             end
           }
-        }
+        },
+      interfaces: [PublicSchema.node_interface]
       }
   end
 
 end
+
+

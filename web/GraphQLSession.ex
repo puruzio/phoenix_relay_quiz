@@ -13,16 +13,18 @@ defmodule App.GraphQLSession do
     # %{conn: _conn}
     
     current_user =  Guardian.Plug.current_resource(conn) 
-       
-    # IEx.pry
-    IO.inspect current_user
+    IO.inspect conn
+    IEx.pry
+    %{author: conn.assigns[:current_user]}
+    
+    # IO.inspect current_user
     # case current_user do
     #   nil ->
     #     %{author: "No user"}
     #   user ->
     #     %{author: user}    
     # end
-    %{author: current_user}
+    # %{author: current_user}
   end
 end
 # https://github.com/graphql-elixir/plug_graphql/issues/22

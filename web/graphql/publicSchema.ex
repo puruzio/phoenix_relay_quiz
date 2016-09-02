@@ -11,6 +11,9 @@ defmodule App.PublicSchema do
   alias GraphQL.Relay.Connection
   @type_string %{type: %GraphQL.Type.String{}}
   alias GraphQL.Relay.Node
+  alias App.Quiz.Type
+  alias App.Category.Type
+  alias App.Type.CategoryConnection
 
   @store %{
     id: 1
@@ -22,7 +25,7 @@ defmodule App.PublicSchema do
       IO.inspect obj
       case obj do
         @store ->
-          App.Type.Store.get
+          App.Store.Type
         _ ->
           %{}
       end
@@ -48,7 +51,7 @@ defmodule App.PublicSchema do
         fields: %{
           node: node_field,
           store: %{
-            type: App.Type.Store.get,
+            type: App.Store.Type,
             resolve: fn (doc, _args, _) ->
               @store
             end
@@ -64,7 +67,7 @@ defmodule App.PublicSchema do
               question: %{type: %NonNull{ofType: %String{}}},
               choices: %{type: %NonNull{ofType: %String{}}},
               author: %{type: %NonNull{ofType: %String{}}},
-              categories: %{type: %NonNull{ofType: %String{}}},
+              # categories: %{type: %CategoryConnection{}},
               mediaUrl: %{type: %NonNull{ofType: %String{}}},
               typeCode: %{type: %NonNull{ofType: %String{}}},
             },
@@ -79,7 +82,7 @@ defmodule App.PublicSchema do
                 end
               },
               store: %{
-                type: App.Type.Store.get,
+                type: App.Store.Type,
                 resolve: fn (obj, _args, _info) ->
                   @store
                 end
@@ -92,10 +95,47 @@ defmodule App.PublicSchema do
                     question: input["question"],
                     choices: input["choices"],
                     author: input["author"],
-                    categories: input["categories"],
+                    # categories: input["categories"],
                     mediaUrl: input["mediaUrl"],
                     typeCode: input["typeCode"],
                     # author: _info.root_value.author,
+                    timestamp: TimeHelper.currentTime
+                    })
+                |> DB.run
+                |> DB.handle_graphql_resp
+            end
+          }),
+          createCategory: Mutation.new(%{
+            name: "CreateCategory",
+            input_fields: %{
+              id: %{type: %NonNull{ofType: %String{}}},
+              quizReverse: %{type: %NonNull{ofType: %String{}}}, #%{type:  %List{ofType: App.Type.Quiz.get}}, ####reverse name for Quiz category
+              category: %{type: %NonNull{ofType: %String{}}},
+              categoryType: %{type: %NonNull{ofType: %String{}}},
+            },
+            output_fields: %{
+              userEdge: %{
+                type: App.Type.CategoryConnection.get[:edge_type],
+                resolve: fn (obj, _args, _info) ->
+                  %{
+                    node: App.Query.Category.get_from_id(first(obj[:generated_keys])),
+                    cursor: first(obj[:generated_keys])
+                  }
+                end
+              },
+              store: %{
+                type: App.Store.Type,
+                resolve: fn (obj, _args, _info) ->
+                  @store
+                end
+              }
+            },
+            mutate_and_get_payload: fn(input, _info) ->
+              Query.table("categories")
+                |> Query.insert(
+                  %{
+                    category: input["category"],
+                    categoryType: input["categoryType"],
                     timestamp: TimeHelper.currentTime
                     })
                 |> DB.run
@@ -120,7 +160,7 @@ defmodule App.PublicSchema do
                 end
               },
               store: %{
-                type: App.Type.Store.get,
+                type: App.Store.Type,
                 resolve: fn (obj, _args, _info) ->
                   @store
                 end
@@ -133,7 +173,13 @@ defmodule App.PublicSchema do
                     username: input["username"],
                     email: input["email"],
                     timestamp: TimeHelper.currentTime
-                    })
+                    }
+                    ## Something JO tried to avoid duplicate user; however, user is currently created through Guardian REST call 
+                    # %{conflict: fn (email, old, new) -> 
+                    #     {:error,"conflict"}
+                    #   end
+                    # }
+                    )
                 |> DB.run
                 |> DB.handle_graphql_resp
             end

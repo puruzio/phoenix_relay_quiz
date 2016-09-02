@@ -5,7 +5,7 @@ defmodule App.Type.UserConnection do
   def get do
     %{
       name: "User",
-      node_type: App.Type.User.get,
+      node_type: App.User.Type,
       edge_fields: %{},
       connection_fields: %{},
       resolve_node: nil,

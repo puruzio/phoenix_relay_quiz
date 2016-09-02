@@ -24,7 +24,7 @@ class CreateQuizMutation extends Relay.Mutation {
     return Relay.QL`
       fragment on CreateQuizPayload {
         quizEdge,
-        store { quizConnection }
+        store { quizConnection },
       }
     `;
   }
@@ -39,7 +39,8 @@ class CreateQuizMutation extends Relay.Mutation {
       rangeBehaviors: {
         '': 'prepend',
       },
-    }];
+    },
+    ];
   }
 
   getOptimisticResponse() {

@@ -1,21 +1,17 @@
-defmodule App.User.Type do
-
-  @moduledoc """
-  Type for the User Object.
-  user(id:"sdjflaksdjflkad"){ email id name articles{ edge{ node{ ... } } } }
-  """
-
+defmodule App.Category.Type do
   @type_string %{type: %GraphQL.Type.String{}}
   alias GraphQL.Type.ObjectType
+  alias GraphQL.Type.NonNull
 
   def type do
     %ObjectType{
-        name: "User",
-        description: "User, a users has friends that are users... ",
+        name: "Category",
         fields: %{
           id: @type_string,
-          username: @type_string,
-          email: @type_string,
+          # quizReverse: %{type: %List{ofType: App.Type.Quiz.get}},
+          quizReverse: @type_string, #%{type: Quiz.get},
+          category: @type_string,
+          categoryType: @type_string,
           createdAt: %{
             type: %GraphQL.Type.String{},
             resolve: fn( obj, _args, _info) ->

@@ -9,6 +9,7 @@ defmodule App.V1.SessionController do
 
         conn
         |> put_status(:created)
+        |> assign(:current_user, user) #https://github.com/graphql-elixir/graphql/wiki/How-to-do-authentication-and-authorization-in-a-Phoenix-application-with-GraphQL
         |> render(App.V1.SessionView, "show.json", jwt: Guardian.Plug.current_token(conn))
       :error ->
         conn

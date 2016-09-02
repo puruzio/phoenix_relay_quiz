@@ -4,7 +4,7 @@ defmodule App.Query.User do
   alias RethinkDB.Query
   def get do
     %{
-      type: %List{ofType: App.Type.User.get},
+      type: %List{ofType: App.User.Type},
       resolve: fn (_, args, _) ->
         table("users")
         |> Query.limit(args.first)

@@ -1,12 +1,12 @@
-defmodule App.Query.Quiz do
+defmodule App.Query.Category do
   alias GraphQL.Type.List
   import RethinkDB.Query, only: [table: 1]
   alias RethinkDB.Query
   def get do
     %{
-      type: %List{ofType: App.Quiz.Type},
+      type: %List{ofType: App.Category.Type},
       resolve: fn (_, args, _) ->
-        table("quizs")
+        table("categories")
         |> Query.limit(args.first)
         |> DB.run
         |> DB.handle_graphql_resp
@@ -15,7 +15,7 @@ defmodule App.Query.Quiz do
   end
 
   def get_from_id(id) do
-    table("quizs")
+    table("categories")
     |> Query.get(id)
     |> DB.run
     |> DB.handle_graphql_resp
