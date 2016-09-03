@@ -25,6 +25,7 @@ defmodule App.Router do
   scope "/", App do
     pipe_through :browser # Use the default browser stack
     get "/", PageController, :index
+    get "/init-table", PageController, :init
     get "/reset", PageController, :reset_db
     
   end

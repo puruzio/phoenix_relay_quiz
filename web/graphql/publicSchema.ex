@@ -7,13 +7,16 @@ defmodule App.PublicSchema do
   alias GraphQL.Type.NonNull
   alias GraphQL.Type.String
   alias GraphQL.Relay.Mutation
+
   alias RethinkDB.Query
+
   alias GraphQL.Relay.Connection
   @type_string %{type: %GraphQL.Type.String{}}
   alias GraphQL.Relay.Node
+
   alias App.Quiz.Type
   alias App.Category.Type
-  alias App.Type.CategoryConnection
+  alias App.User.Type
 
   @store %{
     id: 1
@@ -21,8 +24,8 @@ defmodule App.PublicSchema do
 
   def node_interface do
     Node.define_interface(fn(obj) ->
-      IO.puts "node_interface"
-      IO.inspect obj
+      # IO.puts "node_interface"
+      # IO.inspect obj
       case obj do
         @store ->
           App.Store.Type
@@ -73,7 +76,7 @@ defmodule App.PublicSchema do
             },
             output_fields: %{
               quizEdge: %{
-                type: App.Type.QuizConnection.get[:edge_type],
+                type: App.Quiz.Type.connection[:connection_type],
                 resolve: fn (obj, _args, _info) ->
                   %{
                     node: App.Query.Quiz.get_from_id(first(obj[:generated_keys])),
@@ -115,7 +118,7 @@ defmodule App.PublicSchema do
             },
             output_fields: %{
               userEdge: %{
-                type: App.Type.CategoryConnection.get[:edge_type],
+                type: App.Category.Type.connection[:connection_type],
                 resolve: fn (obj, _args, _info) ->
                   %{
                     node: App.Query.Category.get_from_id(first(obj[:generated_keys])),
@@ -151,7 +154,7 @@ defmodule App.PublicSchema do
             },
             output_fields: %{
               userEdge: %{
-                type: App.Type.UserConnection.get[:edge_type],
+                type: App.User.Type.connection[:connection_type],
                 resolve: fn (obj, _args, _info) ->
                   %{
                     node: App.Query.User.get_from_id(first(obj[:generated_keys])),

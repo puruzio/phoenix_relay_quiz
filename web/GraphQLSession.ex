@@ -13,8 +13,8 @@ defmodule App.GraphQLSession do
     # %{conn: _conn}
     
     current_user =  Guardian.Plug.current_resource(conn) 
-    IO.inspect conn
-    IEx.pry
+    # IO.inspect conn
+    # IEx.pry
     %{author: conn.assigns[:current_user]}
     
     # IO.inspect current_user

@@ -20,7 +20,7 @@ defmodule App.Store.Type do
       fields: %{
         id: Node.global_id_field("Store"),
         quizConnection: %{
-          type: App.Type.QuizConnection.get[:connection_type],
+          type: App.Quiz.Type.connection[:connection_type],
           args: Map.merge(Connection.args, %{query: @type_string}),
           resolve: fn ( _, args , _ctx) ->
             query = table("quizs")
@@ -32,11 +32,23 @@ defmodule App.Store.Type do
           end
         },
         userConnection: %{
-          type: App.Type.UserConnection.get[:connection_type],
+          type: App.User.Type.connection[:connection_type],
           args: Map.merge(Connection.args, %{query: @type_string}),
           resolve: fn ( _, args , _ctx) ->
             query = table("users")
               |> Query.filter( lambda fn(user) ->  Query.match(user[:username],args[:query]) end)
+              |> Query.order_by(Query.desc("timestamp"))
+              |> DB.run
+              |> DB.handle_graphql_resp
+          Connection.List.resolve(query, args)
+          end
+        },
+         categoryConnection: %{
+          type: App.Category.Type.connection[:connection_type],
+          args: Map.merge(Connection.args, %{query: @type_string}),
+          resolve: fn ( _, args , _ctx) ->
+            query = table("categories")
+              |> Query.filter( lambda fn(category) ->  Query.match(category[:category],args[:query]) end)
               |> Query.order_by(Query.desc("timestamp"))
               |> DB.run
               |> DB.handle_graphql_resp
