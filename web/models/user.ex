@@ -13,12 +13,17 @@ defmodule App.User do
     field :password, :string, virtual: true
     field :password_hash, :string
 
+    has_many :quizs, App.Quiz
+
     timestamps
   end
 
   @required_fields ~w(username email)
   @optional_fields ~w()
 
+  def quizs do
+    []
+  end
   @doc """
   Creates a changeset based on the `model` and `params`.
 
