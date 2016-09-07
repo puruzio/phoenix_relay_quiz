@@ -24,13 +24,13 @@ defmodule App.PublicSchema do
 
   def node_interface do
     Node.define_interface(fn(obj) ->
-      # IO.puts "node_interface"
-      # IO.inspect obj
       case obj do
-        @store ->
-          App.Store.Type
+        %{username: _username} ->
+          App.User.Type.type
+        %{category: _category} ->
+          App.Category.Type.type
         _ ->
-          %{}
+          App.Quiz.Type.type
       end
     end)
   end
@@ -39,13 +39,40 @@ defmodule App.PublicSchema do
     Node.define_field(node_interface, fn (_item, args, _ctx) ->
       [type, id] = Node.from_global_id(args[:id])
       case type do
-        "Store" ->
-          @store
+        "username" ->
+          App.User.find(id)
+        "category" ->
+          App.Category.find(id)
         _ ->
-          %{}
+          App.Quiz.find(id)
       end
     end)
   end
+
+  # def node_interface do
+  #   Node.define_interface(fn(obj) ->
+  #     # IO.puts "node_interface"
+  #     # IO.inspect obj
+  #     case obj do
+  #       @store ->
+  #         App.Store.Type
+  #       _ ->
+  #         %{}
+  #     end
+  #   end)
+  # end
+
+  # def node_field do
+  #   Node.define_field(node_interface, fn (_item, args, _ctx) ->
+  #     [type, id] = Node.from_global_id(args[:id])
+  #     case type do
+  #       "Store" ->
+  #         @store
+  #       _ ->
+  #         %{}
+  #     end
+  #   end)
+  # end
 
   def schema do
     %Schema{
@@ -57,6 +84,9 @@ defmodule App.PublicSchema do
             type: App.Store.Type,
             resolve: fn (doc, _args, _) ->
               @store
+                  
+            # resolve: fn(_, _, _) -> App.User.Type.find("3b5109a3-d77a-443d-853b-d3a7175f0644") 
+            # resolve: fn(_, _, _) -> App.User.Type.find(1) 
             end
           }
         }

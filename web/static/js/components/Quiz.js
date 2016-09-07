@@ -43,6 +43,7 @@ class Quiz extends React.Component {
 
     var categories = [];
     if (quiz.categories) {
+      console.log(quiz.categories);
       categories = quiz.categories.split(',');
     } else {
       categories = ['uncategorized'];
@@ -115,7 +116,13 @@ export default Relay.createContainer(Quiz, {
           question,
           choices,
           author,
-          categories,
+          categories (first: 1000) {
+            edges {
+              node {
+                category
+              }
+            }
+          }
           mediaUrl,
           typeCode,
           createdAt,

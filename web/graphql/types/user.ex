@@ -17,7 +17,10 @@ defmodule App.User.Type do
   alias GraphQL.Relay.Node
 
   alias App.PublicSchema
+  alias App.Repo
 
+  import RethinkDB.Query#, only: [table: 1]
+  alias RethinkDB.Query
 
   def connection do
     %{
@@ -41,14 +44,23 @@ defmodule App.User.Type do
           quizs: %{
             type: App.Quiz.Type.connection[:connection_type],
             description: "quiz authored by user",
-            args: Map.merge(
-              %{status: %{type: %String{}, defaultValue: "any"}},
-              Connection.args
-            ),
+            args: Map.merge(Connection.args, %{query: @type_string}),
+            # args: Map.merge(
+            #   %{status: %{type: %String{}, defaultValue: "any"}},
+            #   Connection.args
+            # ),
             resolve: fn(user, args, _ctx) ->
+              # table("users")
+              # |> outer_join(
+              #   table("quizs"), &(eq(&1["id"], &2["author"]))
+              # )
+              # |> Query.map(fn(x) -> x.right end)
+              ## |> Query.limit(args.first)
+              # |> DB.run
+              # |> DB.handle_graphql_resp
               query = Ecto.assoc(user, :quizs)
               query = case args do
-                %{status: "active"} -> from things in query, where: things.complete == false
+                 %{status: "active"} -> from things in query, where: things.complete == false
                 %{status: "completed"} -> from things in query, where: things.complete == true
                 _ -> query
               end

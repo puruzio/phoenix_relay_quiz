@@ -19,7 +19,7 @@ defmodule App.Mixfile do
   def application do
     [mod: {App, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger,
-                    :plug_graphql, :phoenix_ecto, :postgrex, :tzdata, :comeonin, :rethinkdb_ecto]]
+                    :plug_graphql, :phoenix_ecto, :postgrex, :tzdata, :comeonin]]
   end
 
   # Specifies which paths to compile per environment
@@ -30,19 +30,17 @@ defmodule App.Mixfile do
   #
   # Type `mix help deps` for examples and options
   defp deps do
-    [{:phoenix, "~> 1.1.4"},
-     {:phoenix_ecto, "~> 2.0"},
-     {:postgrex, ">= 0.0.0"},
-     {:phoenix_html, "~> 2.2"},
+    [{:phoenix, "~> 1.1.6"},
+     {:phoenix_ecto, "~> 3.0"},
+     {:postgrex, ">= 0.11.2"},
+     {:phoenix_html, "~> 2.6"},
      {:timex, "~> 2.1.1"},
      {:phoenix_live_reload, "~> 1.0"},
      {:cowboy, "~> 1.0"},
      {:comeonin, "~> 1.2"},    # react-phoenix-rethinkdb 
      {:guardian, "~> 0.6.2"},  # react-phoenix-rethinkdb
-     {:graphql_relay, "~> 0.0.15"},
-     {:plug_graphql, "~> 0.2"},
-     {:rethinkdb,"~> 0.3.2"},
-     {:rethinkdb_ecto, "~> 0.1"},
+     {:graphql_relay, "~> 0.5"},
+     {:plug_graphql, "~> 0.3"},
      {:cors_plug, "~> 1.1"},
      {:json, "~> 0.3.0"}
      ]

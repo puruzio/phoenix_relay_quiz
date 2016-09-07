@@ -2,7 +2,7 @@ defmodule App.Quiz do
   use App.Web, :model
 
   schema "quizs" do
-    belongs_to :user, App.User
+    belongs_to :user, App.User, foreign_key: :user_id, type: :binary_id
     field :question, :string
     field :author, :string
     field :choices, :string

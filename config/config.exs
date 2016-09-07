@@ -14,8 +14,8 @@ config :app, App.Endpoint,
   pubsub: [name: App.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
-config :app, App.Repo,
-  adapter: RethinkDB.Ecto
+# config :app, App.Repo,
+#   adapter: RethinkDB.Ecto
 
 # Configures Elixir's Logger
 config :logger, :console,
